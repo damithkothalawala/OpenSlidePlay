@@ -11,7 +11,7 @@
   <video id="videoPlayer" controls autoplay style="display: none; width: 100%;"></video>
 
   <script>
-    const ws = new WebSocket('ws://localhost/ws');
+    const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
     const pdfViewer = document.getElementById('pdfViewer');
     const videoPlayer = document.getElementById('videoPlayer');
     const title = document.getElementById('title');
@@ -23,7 +23,7 @@
       handleAction(message);
     };
 
-    function handleAction({ action, itemId }) {
+    function handleAction({ action, itemId, page }) {
       switch (action) {
         case 'playItem':
           fetch('/playlist.json')
@@ -39,6 +39,9 @@
           break;
         case 'prevPage':
           changePage(-1);
+          break;
+        case 'goToPage':
+          if (currentPdfSource && page) jumpToPage(page);
           break;
         case 'pauseVideo':
           videoPlayer.pause();
@@ -68,6 +71,11 @@
     function changePage(offset) {
       currentPage += offset;
       if (currentPage < 1) currentPage = 1;
+      pdfViewer.src = `${currentPdfSource}#page=${currentPage}`;
+    }
+
+    function jumpToPage(page) {
+      currentPage = page;
       pdfViewer.src = `${currentPdfSource}#page=${currentPage}`;
     }
 
