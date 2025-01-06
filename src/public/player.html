@@ -47,11 +47,10 @@
     const canvasContext = pdfCanvas.getContext('2d');
     let pdfDoc = null;
     let currentPage = 1;
-    const scale = 1.5; // Adjust for zoom level
+    const scale = 1.5;
     let currentPdfSource = '';
     let sessionCode = null;
 
-    // Prompt for session code
     function joinSession() {
       sessionCode = prompt("Enter Session Code to Join:");
       if (!sessionCode) {
@@ -85,6 +84,16 @@
         case 'goToPage':
           if (currentPdfSource && page) jumpToPage(page);
           break;
+        case 'pauseVideo':
+          videoPlayer.pause();
+          break;
+        case 'loopVideo':
+          videoPlayer.loop = !videoPlayer.loop;
+          break;
+        case 'restartVideo':
+          videoPlayer.currentTime = 0;
+          videoPlayer.play();
+          break;
       }
     }
 
@@ -98,7 +107,7 @@
 
     function playVideo(item) {
       videoPlayer.src = item.source;
-      videoPlayer.volume = 1.0; // Set volume to maximum
+      videoPlayer.volume = 1.0;
       videoPlayer.style.display = 'block';
       pdfContainer.style.display = 'none';
       videoPlayer.play();

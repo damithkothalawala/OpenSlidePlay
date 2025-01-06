@@ -9,16 +9,23 @@
       font-family: Arial, sans-serif;
       margin: 20px;
     }
+    #sessionCode {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .playlist-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
     button {
       margin: 5px;
       padding: 10px;
       font-size: 14px;
       cursor: pointer;
-    }
-    #sessionCode {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
     }
     ul {
       list-style: none;
@@ -39,25 +46,23 @@
     const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
     let sessionCode = null;
 
-    // Generate a new session code
     function generateSessionCode() {
       sessionCode = Math.random().toString(36).substring(2, 10).toUpperCase();
       document.getElementById('sessionCode').innerText = `Session Code: ${sessionCode}`;
       ws.send(JSON.stringify({ action: 'createSession', code: sessionCode }));
     }
 
-    // Render playlist items with navigation and specific page controls
     function renderPlaylist(playlist) {
       const container = document.getElementById('playlist');
       container.innerHTML = ''; // Clear previous playlist
 
       playlist.forEach(item => {
         const listItem = document.createElement('div');
-        listItem.style.marginBottom = '20px';
+        listItem.className = 'playlist-item';
 
-        const button = document.createElement('button');
-        button.innerText = `Play ${item.name}`;
-        button.onclick = () => {
+        const mainButton = document.createElement('button');
+        mainButton.innerText = `Play ${item.name}`;
+        mainButton.onclick = () => {
           ws.send(JSON.stringify({
             action: 'playItem',
             itemId: item.id,
@@ -65,7 +70,7 @@
           }));
         };
 
-        listItem.appendChild(button);
+        listItem.appendChild(mainButton);
 
         if (item.type === 'pdf' && item.specificPages) {
           const ul = document.createElement('ul');
@@ -84,20 +89,52 @@
             ul.appendChild(li);
           });
           listItem.appendChild(ul);
+        } else if (item.type === 'video') {
+          const videoControls = document.createElement('div');
+
+          const pauseButton = document.createElement('button');
+          pauseButton.innerText = 'Pause Video';
+          pauseButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'pauseVideo',
+              code: sessionCode
+            }));
+          };
+
+          const loopButton = document.createElement('button');
+          loopButton.innerText = 'Toggle Loop';
+          loopButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'loopVideo',
+              code: sessionCode
+            }));
+          };
+
+          const restartButton = document.createElement('button');
+          restartButton.innerText = 'Restart Video';
+          restartButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'restartVideo',
+              code: sessionCode
+            }));
+          };
+
+          videoControls.appendChild(pauseButton);
+          videoControls.appendChild(loopButton);
+          videoControls.appendChild(restartButton);
+          listItem.appendChild(videoControls);
         }
 
         container.appendChild(listItem);
       });
     }
 
-    // Fetch playlist and render
     async function fetchPlaylist() {
       const response = await fetch('/playlist.json');
       const data = await response.json();
       renderPlaylist(data.playlist);
     }
 
-    // Fetch playlist on load
     fetchPlaylist();
   </script>
 </body>
