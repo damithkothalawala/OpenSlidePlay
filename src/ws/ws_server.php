@@ -1,7 +1,9 @@
-
 <?php
 require 'vendor/autoload.php';
 
+use Ratchet\Http\HttpServer;
+use Ratchet\Server\IoServer;
+use Ratchet\WebSocket\WsServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
@@ -37,6 +39,13 @@ class WebSocketServer implements MessageComponentInterface {
     }
 }
 
-$server = Ratchet\App('0.0.0.0', 8080, '0.0.0.0');
-$server->route('/ws', new WebSocketServer, ['*']);
+$server = IoServer::factory(
+    new HttpServer(
+        new WsServer(
+            new WebSocketServer()
+        )
+    ),
+    8080
+);
+
 $server->run();
