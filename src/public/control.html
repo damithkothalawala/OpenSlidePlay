@@ -52,11 +52,17 @@
 
   <script>
     const ws = new WebSocket('ws://it.bisds.org/ws'); // WebSocket connection to your domain
-    let sessionCode = null;
+    let sessionCode = localStorage.getItem('sessionCode'); // Retrieve session code from localStorage
+
+    // Set the session code on page load if available
+    if (sessionCode) {
+      document.getElementById('sessionCode').innerText = `Session Code: ${sessionCode}`;
+    }
 
     // Generate a new session code
     function generateSessionCode() {
       sessionCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+      localStorage.setItem('sessionCode', sessionCode); // Save session code in localStorage
       document.getElementById('sessionCode').innerText = `Session Code: ${sessionCode}`;
       ws.send(JSON.stringify({ action: 'createSession', code: sessionCode }));
     }
