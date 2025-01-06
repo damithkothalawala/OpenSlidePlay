@@ -4,15 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Control Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
   <h1>Control Page</h1>
   <div id="playlist"></div>
+
+  <!-- PDF Controls -->
   <div id="pdf-controls" style="margin-top: 20px; display: none;">
+    <h3>PDF Controls</h3>
     <button id="prev" onclick="sendAction('prevPage')">Previous Page</button>
     <button id="next" onclick="sendAction('nextPage')">Next Page</button>
+    <ul id="specific-page-list"></ul>
   </div>
+
+  <!-- Video Controls -->
   <div id="video-controls" style="margin-top: 20px; display: none;">
+    <h3>Video Controls</h3>
     <button id="play" onclick="sendAction('playVideo')">Play</button>
     <button id="pause" onclick="sendAction('pauseVideo')">Pause</button>
     <button id="loop" onclick="sendAction('loopVideo')">Toggle Loop</button>
@@ -20,10 +46,11 @@
   </div>
 
   <script>
-    const ws = new WebSocket('ws://localhost/ws');
-    const playlistUrl = '/playlist.json';
+    const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
+    const playlistUrl = '/playlist.json'; // Path to the playlist JSON file
     let currentItem = null;
 
+    // Fetch playlist data and render buttons
     async function fetchPlaylist() {
       const response = await fetch(playlistUrl);
       const data = await response.json();
@@ -32,30 +59,47 @@
 
     function renderPlaylist(playlist) {
       const container = document.getElementById('playlist');
+      container.innerHTML = ''; // Clear previous playlist
+
       playlist.forEach(item => {
         const button = document.createElement('button');
         button.innerText = `Play ${item.name}`;
         button.onclick = () => {
           currentItem = item;
           sendAction('playItem', item.id);
-          updateControls(item.type);
+          updateControls(item.type, item.specificPages || []);
         };
         container.appendChild(button);
       });
     }
 
-    function sendAction(action, itemId = null) {
-      const message = { action, itemId };
+    function updateControls(type, specificPages = []) {
+      document.getElementById('pdf-controls').style.display = type === 'pdf' ? 'block' : 'none';
+      document.getElementById('video-controls').style.display = type === 'video' ? 'block' : 'none';
+
+      // Update specific page list for PDFs
+      const specificPageList = document.getElementById('specific-page-list');
+      specificPageList.innerHTML = ''; // Clear previous list
+
+      if (type === 'pdf' && specificPages.length > 0) {
+        specificPages.forEach(({ page, name }) => {
+          const listItem = document.createElement('li');
+          const button = document.createElement('button');
+          button.innerText = `${name} (Page ${page})`;
+          button.onclick = () => sendAction('goToPage', null, { page });
+          listItem.appendChild(button);
+          specificPageList.appendChild(listItem);
+        });
+      }
+    }
+
+    function sendAction(action, itemId = null, extra = null) {
+      const message = { action, itemId, ...extra };
       ws.send(JSON.stringify(message));
     }
 
-    function updateControls(type) {
-      document.getElementById('pdf-controls').style.display = type === 'pdf' ? 'block' : 'none';
-      document.getElementById('video-controls').style.display = type === 'video' ? 'block' : 'none';
-    }
-
+    // Fetch playlist data on page load
     fetchPlaylist();
   </script>
 </body>
 </html>
-

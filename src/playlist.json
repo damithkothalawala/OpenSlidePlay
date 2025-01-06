@@ -1,22 +1,32 @@
 {
-    "playlist": [
-        {
-            "id": "item1",
-            "type": "pdf",
-            "name": "Introduction",
-            "source": "https://xml.apache.org/xindice/license.pdf"
-        },
-        {
-            "id": "item2",
-            "type": "video",
-            "name": "Product Demo",
-            "source": "https://sample-files-online.com/samples/countdownload/533"
-        },
-        {
-            "id": "item3",
-            "type": "pdf",
-            "name": "Technical Overview",
-            "source": "https://www.gnu.org/licenses/quick-guide-gplv3.pdf"
-        }
-    ]
+  "playlist": [
+    {
+      "id": "item1",
+      "type": "pdf",
+      "name": "Introduction",
+      "source": "https://xml.apache.org/xindice/license.pdf",
+      "specificPages": [
+        { "page": 1, "name": "Cover Page" },
+        { "page": 3, "name": "Overview" },
+        { "page": 5, "name": "Details" }
+      ]
+    },
+    {
+      "id": "item2",
+      "type": "video",
+      "name": "Product Demo",
+      "source": "https://sample-files-online.com/samples/countdownload/533"
+    },
+    {
+      "id": "item3",
+      "type": "pdf",
+      "name": "Technical Overview",
+      "source": "https://www.gnu.org/licenses/quick-guide-gplv3.pdf",
+      "specificPages": [
+        { "page": 2, "name": "Introduction" },
+        { "page": 4, "name": "Usage" },
+        { "page": 6, "name": "Summary" }
+      ]
+    }
+  ]
 }
