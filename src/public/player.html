@@ -111,6 +111,10 @@
     }
 
     function playPdf(item) {
+    if (!videoPlayer.paused) {
+    videoPlayer.pause(); // Stop video playback
+    videoPlayer.currentTime = 0; // Reset video to the start
+    }
       currentPdfSource = item.source;
       currentPage = 1;
       videoPlayer.style.display = 'none';
@@ -119,6 +123,10 @@
     }
 
     function playVideo(item) {
+    if (!videoPlayer.paused) {
+    videoPlayer.pause(); // Stop video playback
+    videoPlayer.currentTime = 0; // Reset video to the start
+    }
       videoPlayer.src = item.source;
       videoPlayer.volume = 1.0;
       videoPlayer.style.display = 'block';
