@@ -24,5 +24,5 @@ COPY apache.conf /etc/apache2/sites-available/000-default.conf
 # Install WebSocket server dependencies
 WORKDIR /var/www/html/ws
 COPY src/ws/composer.json /var/www/html/ws/composer.json
-RUN composer install
+RUN composer install --working-dir=/var/www/html/ws/
 
