@@ -46,6 +46,13 @@
         case 'playVideo':
           videoPlayer.play();
           break;
+        case 'loopVideo':
+          videoPlayer.loop = !videoPlayer.loop;
+          break;
+        case 'restartVideo':
+          videoPlayer.currentTime = 0;
+          videoPlayer.play();
+          break;
       }
     }
 
