@@ -20,6 +20,13 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
@@ -39,12 +46,15 @@
       ws.send(JSON.stringify({ action: 'createSession', code: sessionCode }));
     }
 
-    // Render playlist items
+    // Render playlist items with navigation and specific page controls
     function renderPlaylist(playlist) {
       const container = document.getElementById('playlist');
       container.innerHTML = ''; // Clear previous playlist
 
       playlist.forEach(item => {
+        const listItem = document.createElement('div');
+        listItem.style.marginBottom = '20px';
+
         const button = document.createElement('button');
         button.innerText = `Play ${item.name}`;
         button.onclick = () => {
@@ -54,7 +64,29 @@
             code: sessionCode
           }));
         };
-        container.appendChild(button);
+
+        listItem.appendChild(button);
+
+        if (item.type === 'pdf' && item.specificPages) {
+          const ul = document.createElement('ul');
+          item.specificPages.forEach(page => {
+            const li = document.createElement('li');
+            const pageButton = document.createElement('button');
+            pageButton.innerText = `${page.name} (Page ${page.page})`;
+            pageButton.onclick = () => {
+              ws.send(JSON.stringify({
+                action: 'goToPage',
+                page: page.page,
+                code: sessionCode
+              }));
+            };
+            li.appendChild(pageButton);
+            ul.appendChild(li);
+          });
+          listItem.appendChild(ul);
+        }
+
+        container.appendChild(listItem);
       });
     }
 
