@@ -54,7 +54,10 @@
   <video id="videoPlayer" controls autoplay></video>
 
   <script type="module">
-    import { getDocument } from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
+    import { GlobalWorkerOptions, getDocument } from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
+
+    // Set the worker script URL
+    GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
     const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
     const pdfContainer = document.getElementById('pdfContainer');
@@ -134,15 +137,14 @@
       videoPlayer.play();
     }
 
-    // Load PDF using PDF.js
     async function loadPdf(url) {
       pdfDoc = await getDocument(url).promise;
       totalPagesElement.textContent = pdfDoc.numPages;
       renderPage(currentPage);
     }
 
-    // Render a specific PDF page
     async function renderPage(pageNum) {
+      if (!pdfDoc) return;
       const page = await pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale });
 
@@ -160,7 +162,6 @@
       currentPageElement.textContent = pageNum;
     }
 
-    // Navigation functions
     function goToPreviousPage() {
       if (currentPage <= 1) return;
       currentPage--;
@@ -174,7 +175,10 @@
     }
 
     function jumpToPage(page) {
-      if (page < 1 || page > pdfDoc.numPages) return;
+      if (!pdfDoc || page < 1 || page > pdfDoc.numPages) {
+        console.error('PDF document is not loaded or invalid page number.');
+        return;
+      }
       currentPage = page;
       renderPage(currentPage);
     }
