@@ -4,7 +4,7 @@
       "id": "item1",
       "type": "pdf",
       "name": "Introduction",
-      "source": "http://localhost/license.pdf",
+      "source": "http://it.bisds.org/license.pdf",
       "specificPages": [
         { "page": 1, "name": "Cover Page" },
         { "page": 3, "name": "Overview" },
@@ -15,13 +15,13 @@
       "id": "item2",
       "type": "video",
       "name": "Meditation Video",
-      "source": "http://localhost/meditation.mp4"
+      "source": "http://it.bisds.org/meditation.mp4"
     },
     {
       "id": "item3",
       "type": "pdf",
       "name": "Technical Overview",
-      "source": "http://localhost/quick-guide-gplv3.pdf",
+      "source": "http://it.bisds.org/quick-guide-gplv3.pdf",
       "specificPages": [
         { "page": 2, "name": "Introduction" },
         { "page": 4, "name": "Usage" },
