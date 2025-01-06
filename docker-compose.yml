@@ -1,0 +1,19 @@
+
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_GROUP: www-data
+      APACHE_LOG_DIR: /var/log/apache2
+    command: >
+      bash -c "
+      php /var/www/html/ws/ws_server.php &
+      apache2-foreground
+      "
+    volumes:
+      - ./src:/var/www/html
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf
