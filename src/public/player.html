@@ -25,7 +25,7 @@
 
     function handleAction({ action, itemId, extra }) {
       if (action === 'playItem') {
-        fetch('https://example.com/playlist.json')
+        fetch('http://localhost/playlist.json')
           .then(response => response.json())
           .then(data => {
             const item = data.playlist.find(i => i.id === itemId);

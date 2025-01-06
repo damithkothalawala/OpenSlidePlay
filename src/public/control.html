@@ -12,7 +12,7 @@
 
   <script>
     const ws = new WebSocket('ws://localhost/ws');
-    const playlistUrl = 'https://example.com/playlist.json';
+    const playlistUrl = 'http://localhost/playlist.json';
 
     async function fetchPlaylist() {
       const response = await fetch(playlistUrl);
