@@ -2,30 +2,75 @@
   "playlist": [
     {
       "id": "item1",
-      "type": "pdf",
-      "name": "Introduction",
-      "source": "http://it.bisds.org/license.pdf",
-      "specificPages": [
-        { "page": 1, "name": "Cover Page" },
-        { "page": 3, "name": "Overview" },
-        { "page": 5, "name": "Details" }
-      ]
+      "type": "video",
+      "name": "Imee Ooi-Metta Song",
+      "source": "http://it.bisds.org/media/1_METTA_SONG.mp4"
     },
     {
       "id": "item2",
       "type": "video",
-      "name": "Meditation Video",
-      "source": "http://it.bisds.org/meditation.mp4"
+      "name": "Puja Welcome Video",
+      "source": "http://it.bisds.org/media/2_WELCOME_PUJA.mp4"
     },
+    
     {
       "id": "item3",
       "type": "pdf",
-      "name": "Technical Overview",
-      "source": "http://it.bisds.org/quick-guide-gplv3.pdf",
+      "name": "BUDDHA PŪJĀ Presentation",
+      "source": "http://it.bisds.org/media/3_VANDANA.pdf",
       "specificPages": [
-        { "page": 2, "name": "Introduction" },
-        { "page": 4, "name": "Usage" },
-        { "page": 6, "name": "Summary" }
+        { "page": 2, "name": "Program Schedule" },
+        { "page": 4, "name": "Opening" },
+        { "page": 35, "name": "Auspicious Blessings" },
+        { "page": 37, "name": "Metta Meditation" },
+        { "page": 38, "name": "School Announcements" }
+      ]
+    },
+    {
+      "id": "item4",
+      "type": "pdf",
+      "name": "Metta Meditation Logo",
+      "source": "http://it.bisds.org/media/4_Metta_Meditation_Logo.pdf"
+    },
+    {
+      "id": "item5",
+      "type": "video",
+      "name": "BISDS School Song Video",
+      "source": "http://it.bisds.org/media/4_SCHOOL_SONG.mp4"
+    },
+    {
+      "id": "item6",
+      "type": "pdf",
+      "name": "BISDS School Song Presentation",
+      "source": "http://it.bisds.org/media/5_SCHOOL_SONG.pdf"
+    },
+    {
+      "id": "item7",
+      "type": "pdf",
+      "name": "Buddhist Birthday Song Presentation",
+      "source": "http://it.bisds.org/media/6_BUDDHIST_BIRTHDAY_SONG.pdf"
+    },
+    {
+      "id": "item8",
+      "type": "pdf",
+      "name": "Buddhist Hymns Presentation",
+      "source": "http://it.bisds.org/media/9_Buddhist_Hymns.pdf",
+      "specificPages": [
+        { "page": 2, "name": "Congratulations" },
+        { "page": 7, "name": "The Bodhi Tree" },
+        { "page": 9, "name": "Dhamma Shines In Me" },
+        { "page": 12, "name": "Cradled in Buddha’s Arms" },
+        { "page": 15, "name": "Doors Of My Heart" },
+        { "page": 21, "name": "Buddha Lord In Thine Embrace" },
+        { "page": 24, "name": "Ehipassiko" },
+        { "page": 28, "name": "Wheel Of Life" },
+        { "page": 33, "name": "Thoughts" },
+        { "page": 36, "name": "Standing Together" },
+        { "page": 40, "name": "Children of the Buddha" },
+        { "page": 43, "name": "Light a Candle for Peace" },
+        { "page": 47, "name": "Reunion Dinner 团圆饭" },
+        { "page": 59, "name": "Invisible Wings 隐形的翅膀" },
+        { "page": 70, "name": "Fu Qin 父亲(Father)" }
       ]
     }
   ]
