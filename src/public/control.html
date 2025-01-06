@@ -89,19 +89,9 @@
           const pdfControls = document.createElement('div');
           pdfControls.className = 'pdf-controls mt-2';
 
-          const nextButton = document.createElement('button');
-          nextButton.className = 'btn btn-outline-secondary btn-sm';
-          nextButton.innerText = 'Next Page';
-          nextButton.onclick = () => {
-            ws.send(JSON.stringify({
-              action: 'nextPage',
-              code: sessionCode
-            }));
-          };
-
           const backButton = document.createElement('button');
           backButton.className = 'btn btn-outline-secondary btn-sm';
-          backButton.innerText = 'Back Page';
+          backButton.innerText = 'Back';
           backButton.onclick = () => {
             ws.send(JSON.stringify({
               action: 'prevPage',
@@ -109,31 +99,43 @@
             }));
           };
 
+          const forwardButton = document.createElement('button');
+          forwardButton.className = 'btn btn-outline-secondary btn-sm';
+          forwardButton.innerText = 'Forward';
+          forwardButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'nextPage',
+              code: sessionCode
+            }));
+          };
+
           pdfControls.appendChild(backButton);
-          pdfControls.appendChild(nextButton);
+          pdfControls.appendChild(forwardButton);
+
+          listItem.appendChild(pdfControls);
 
           if (item.specificPages) {
             const ul = document.createElement('ul');
             ul.className = 'specific-pages mt-2';
             item.specificPages.forEach(page => {
               const li = document.createElement('li');
-              const pageButton = document.createElement('button');
-              pageButton.className = 'btn btn-outline-info btn-sm';
-              pageButton.innerText = `${page.name} (Page ${page.page})`;
-              pageButton.onclick = () => {
+              const pageLink = document.createElement('a');
+              pageLink.href = '#';
+              pageLink.className = 'text-info';
+              pageLink.innerText = `${page.name} (Page ${page.page})`;
+              pageLink.onclick = (e) => {
+                e.preventDefault();
                 ws.send(JSON.stringify({
                   action: 'goToPage',
                   page: page.page,
                   code: sessionCode
                 }));
               };
-              li.appendChild(pageButton);
+              li.appendChild(pageLink);
               ul.appendChild(li);
             });
             listItem.appendChild(ul);
           }
-
-          listItem.appendChild(pdfControls);
         }
 
         // Video-specific controls
