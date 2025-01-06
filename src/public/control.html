@@ -15,48 +15,31 @@
       font-size: 14px;
       cursor: pointer;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 5px 0;
+    #sessionCode {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <h1>Control Page</h1>
+  <div id="sessionCode">Session Code: Not Generated</div>
+  <button onclick="generateSessionCode()">Generate Session Code</button>
   <div id="playlist"></div>
-
-  <!-- PDF Controls -->
-  <div id="pdf-controls" style="margin-top: 20px; display: none;">
-    <h3>PDF Controls</h3>
-    <button id="prev" onclick="sendAction('prevPage')">Previous Page</button>
-    <button id="next" onclick="sendAction('nextPage')">Next Page</button>
-    <ul id="specific-page-list"></ul>
-  </div>
-
-  <!-- Video Controls -->
-  <div id="video-controls" style="margin-top: 20px; display: none;">
-    <h3>Video Controls</h3>
-    <button id="play" onclick="sendAction('playVideo')">Play</button>
-    <button id="pause" onclick="sendAction('pauseVideo')">Pause</button>
-    <button id="loop" onclick="sendAction('loopVideo')">Toggle Loop</button>
-    <button id="restart" onclick="sendAction('restartVideo')">Restart</button>
-  </div>
 
   <script>
     const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
-    const playlistUrl = '/playlist.json'; // Path to the playlist JSON file
-    let currentItem = null;
+    let sessionCode = null;
 
-    // Fetch playlist data and render buttons
-    async function fetchPlaylist() {
-      const response = await fetch(playlistUrl);
-      const data = await response.json();
-      renderPlaylist(data.playlist);
+    // Generate a new session code
+    function generateSessionCode() {
+      sessionCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+      document.getElementById('sessionCode').innerText = `Session Code: ${sessionCode}`;
+      ws.send(JSON.stringify({ action: 'createSession', code: sessionCode }));
     }
 
+    // Render playlist items
     function renderPlaylist(playlist) {
       const container = document.getElementById('playlist');
       container.innerHTML = ''; // Clear previous playlist
@@ -65,40 +48,24 @@
         const button = document.createElement('button');
         button.innerText = `Play ${item.name}`;
         button.onclick = () => {
-          currentItem = item;
-          sendAction('playItem', item.id);
-          updateControls(item.type, item.specificPages || []);
+          ws.send(JSON.stringify({
+            action: 'playItem',
+            itemId: item.id,
+            code: sessionCode
+          }));
         };
         container.appendChild(button);
       });
     }
 
-    function updateControls(type, specificPages = []) {
-      document.getElementById('pdf-controls').style.display = type === 'pdf' ? 'block' : 'none';
-      document.getElementById('video-controls').style.display = type === 'video' ? 'block' : 'none';
-
-      // Update specific page list for PDFs
-      const specificPageList = document.getElementById('specific-page-list');
-      specificPageList.innerHTML = ''; // Clear previous list
-
-      if (type === 'pdf' && specificPages.length > 0) {
-        specificPages.forEach(({ page, name }) => {
-          const listItem = document.createElement('li');
-          const button = document.createElement('button');
-          button.innerText = `${name} (Page ${page})`;
-          button.onclick = () => sendAction('goToPage', null, { page });
-          listItem.appendChild(button);
-          specificPageList.appendChild(listItem);
-        });
-      }
+    // Fetch playlist and render
+    async function fetchPlaylist() {
+      const response = await fetch('/playlist.json');
+      const data = await response.json();
+      renderPlaylist(data.playlist);
     }
 
-    function sendAction(action, itemId = null, extra = null) {
-      const message = { action, itemId, ...extra };
-      ws.send(JSON.stringify(message));
-    }
-
-    // Fetch playlist data on page load
+    // Fetch playlist on load
     fetchPlaylist();
   </script>
 </body>
