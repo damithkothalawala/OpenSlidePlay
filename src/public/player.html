@@ -57,7 +57,7 @@
     import { GlobalWorkerOptions, getDocument } from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
 
     // Set the worker script URL
-    GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+    GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
 
     const ws = new WebSocket('ws://localhost/ws'); // Replace with actual WebSocket URL
     const pdfContainer = document.getElementById('pdfContainer');
