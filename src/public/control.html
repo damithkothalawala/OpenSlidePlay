@@ -21,9 +21,6 @@
       background-color: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .playlist-item button {
-      margin: 5px 0;
-    }
     .specific-pages {
       list-style: none;
       padding: 0;
@@ -31,7 +28,8 @@
     .specific-pages li {
       margin-bottom: 5px;
     }
-    .video-controls button {
+    .video-controls button,
+    .pdf-controls button {
       margin: 5px;
     }
   </style>
@@ -53,7 +51,7 @@
   </div>
 
   <script>
-    const ws = new WebSocket('ws://it.bisds.org/ws'); // Replace with actual WebSocket URL
+    const ws = new WebSocket('ws://it.bisds.org/ws'); // WebSocket connection to your domain
     let sessionCode = null;
 
     // Generate a new session code
@@ -86,29 +84,59 @@
 
         listItem.appendChild(mainButton);
 
-        // Add specific page buttons for PDFs
-        if (item.type === 'pdf' && item.specificPages) {
-          const ul = document.createElement('ul');
-          ul.className = 'specific-pages mt-2';
-          item.specificPages.forEach(page => {
-            const li = document.createElement('li');
-            const pageButton = document.createElement('button');
-            pageButton.className = 'btn btn-outline-secondary btn-sm';
-            pageButton.innerText = `${page.name} (Page ${page.page})`;
-            pageButton.onclick = () => {
-              ws.send(JSON.stringify({
-                action: 'goToPage',
-                page: page.page,
-                code: sessionCode
-              }));
-            };
-            li.appendChild(pageButton);
-            ul.appendChild(li);
-          });
-          listItem.appendChild(ul);
+        // PDF-specific controls
+        if (item.type === 'pdf') {
+          const pdfControls = document.createElement('div');
+          pdfControls.className = 'pdf-controls mt-2';
+
+          const nextButton = document.createElement('button');
+          nextButton.className = 'btn btn-outline-secondary btn-sm';
+          nextButton.innerText = 'Next Page';
+          nextButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'nextPage',
+              code: sessionCode
+            }));
+          };
+
+          const backButton = document.createElement('button');
+          backButton.className = 'btn btn-outline-secondary btn-sm';
+          backButton.innerText = 'Back Page';
+          backButton.onclick = () => {
+            ws.send(JSON.stringify({
+              action: 'prevPage',
+              code: sessionCode
+            }));
+          };
+
+          pdfControls.appendChild(backButton);
+          pdfControls.appendChild(nextButton);
+
+          if (item.specificPages) {
+            const ul = document.createElement('ul');
+            ul.className = 'specific-pages mt-2';
+            item.specificPages.forEach(page => {
+              const li = document.createElement('li');
+              const pageButton = document.createElement('button');
+              pageButton.className = 'btn btn-outline-info btn-sm';
+              pageButton.innerText = `${page.name} (Page ${page.page})`;
+              pageButton.onclick = () => {
+                ws.send(JSON.stringify({
+                  action: 'goToPage',
+                  page: page.page,
+                  code: sessionCode
+                }));
+              };
+              li.appendChild(pageButton);
+              ul.appendChild(li);
+            });
+            listItem.appendChild(ul);
+          }
+
+          listItem.appendChild(pdfControls);
         }
 
-        // Add video controls
+        // Video-specific controls
         if (item.type === 'video') {
           const videoControls = document.createElement('div');
           videoControls.className = 'video-controls mt-2';
