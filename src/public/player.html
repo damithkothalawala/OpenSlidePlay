@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,43 +8,68 @@
 <body>
   <h1 id="title">Waiting for Content...</h1>
   <iframe id="pdfViewer" style="display: none; width: 100%; height: 80vh;"></iframe>
-  <video id="videoPlayer" controls style="display: none; width: 100%;"></video>
+  <video id="videoPlayer" controls autoplay style="display: none; width: 100%;"></video>
 
   <script>
     const ws = new WebSocket('ws://localhost/ws');
-
     const pdfViewer = document.getElementById('pdfViewer');
     const videoPlayer = document.getElementById('videoPlayer');
     const title = document.getElementById('title');
+    let currentPage = 1;
+    let currentPdfSource = '';
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       handleAction(message);
     };
 
-    function handleAction({ action, itemId, extra }) {
-      if (action === 'playItem') {
-        fetch('http://localhost/playlist.json')
-          .then(response => response.json())
-          .then(data => {
-            const item = data.playlist.find(i => i.id === itemId);
-            if (item) playItem(item);
-          });
+    function handleAction({ action, itemId }) {
+      switch (action) {
+        case 'playItem':
+          fetch('/playlist.json')
+            .then(response => response.json())
+            .then(data => {
+              const item = data.playlist.find(i => i.id === itemId);
+              if (item.type === 'pdf') playPdf(item);
+              else if (item.type === 'video') playVideo(item);
+            });
+          break;
+        case 'nextPage':
+          changePage(1);
+          break;
+        case 'prevPage':
+          changePage(-1);
+          break;
+        case 'pauseVideo':
+          videoPlayer.pause();
+          break;
+        case 'playVideo':
+          videoPlayer.play();
+          break;
       }
     }
 
-    function playItem(item) {
+    function playPdf(item) {
+      currentPdfSource = item.source;
+      currentPage = 1;
+      pdfViewer.src = `${currentPdfSource}#page=${currentPage}`;
+      pdfViewer.style.display = 'block';
+      videoPlayer.style.display = 'none';
       title.innerText = `Now Playing: ${item.name}`;
+    }
 
-      if (item.type === 'pdf') {
-        pdfViewer.style.display = 'block';
-        videoPlayer.style.display = 'none';
-        pdfViewer.src = item.source;
-      } else if (item.type === 'video') {
-        pdfViewer.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        videoPlayer.src = item.source;
-      }
+    function changePage(offset) {
+      currentPage += offset;
+      if (currentPage < 1) currentPage = 1;
+      pdfViewer.src = `${currentPdfSource}#page=${currentPage}`;
+    }
+
+    function playVideo(item) {
+      videoPlayer.src = item.source;
+      videoPlayer.style.display = 'block';
+      pdfViewer.style.display = 'none';
+      title.innerText = `Now Playing: ${item.name}`;
+      videoPlayer.play();
     }
   </script>
 </body>
