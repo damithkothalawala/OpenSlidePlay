@@ -1,6 +1,9 @@
 
 # OpenSlidePlay
 
+![Project Logo](https://github.com/damithkothalawala/OpenSlidePlay/tree/main/blob/main/OpenSlidePlay.png?raw=true)
+
+
 **OpenSlidePlay** is an open-source project designed to simplify the process of controlling and displaying slides (PDFs) and videos for presentations. The project is built using PHP, WebSocket, and Docker to offer a unified, real-time, and easy-to-use solution for managing media.
 
 ## The Story
