@@ -4,20 +4,20 @@
       "id": "item1",
       "type": "video",
       "name": "Imee Ooi-Metta Song",
-      "source": "http://it.bisds.org/media/1_METTA_SONG.mp4"
+      "source": "https://it.bisds.org/media/1_METTA_SONG.mp4"
     },
     {
       "id": "item2",
       "type": "video",
       "name": "Puja Welcome Video",
-      "source": "http://it.bisds.org/media/2_WELCOME_PUJA.mp4"
+      "source": "https://it.bisds.org/media/2_WELCOME_PUJA.mp4"
     },
     
     {
       "id": "item3",
       "type": "pdf",
       "name": "BUDDHA PŪJĀ Presentation",
-      "source": "http://it.bisds.org/media/3_VANDANA.pdf",
+      "source": "https://it.bisds.org/media/3_VANDANA.pdf",
       "specificPages": [
         { "page": 2, "name": "Program Schedule" },
         { "page": 4, "name": "Opening" },
@@ -30,31 +30,31 @@
       "id": "item4",
       "type": "pdf",
       "name": "Metta Meditation Logo",
-      "source": "http://it.bisds.org/media/4_Metta_Meditation_Logo.pdf"
+      "source": "https://it.bisds.org/media/4_Metta_Meditation_Logo.pdf"
     },
     {
       "id": "item5",
       "type": "video",
       "name": "BISDS School Song Video",
-      "source": "http://it.bisds.org/media/4_SCHOOL_SONG.mp4"
+      "source": "https://it.bisds.org/media/4_SCHOOL_SONG.mp4"
     },
     {
       "id": "item6",
       "type": "pdf",
       "name": "BISDS School Song Presentation",
-      "source": "http://it.bisds.org/media/5_SCHOOL_SONG.pdf"
+      "source": "https://it.bisds.org/media/5_SCHOOL_SONG.pdf"
     },
     {
       "id": "item7",
       "type": "pdf",
       "name": "Buddhist Birthday Song Presentation",
-      "source": "http://it.bisds.org/media/6_BUDDHIST_BIRTHDAY_SONG.pdf"
+      "source": "https://it.bisds.org/media/6_BUDDHIST_BIRTHDAY_SONG.pdf"
     },
     {
       "id": "item8",
       "type": "pdf",
       "name": "Buddhist Hymns Presentation",
-      "source": "http://it.bisds.org/media/9_Buddhist_Hymns.pdf",
+      "source": "https://it.bisds.org/media/9_Buddhist_Hymns.pdf",
       "specificPages": [
         { "page": 2, "name": "Congratulations" },
         { "page": 7, "name": "The Bodhi Tree" },

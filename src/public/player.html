@@ -40,7 +40,7 @@
 
     GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
 
-    const ws = new WebSocket('ws://it.bisds.org/ws');
+    const ws = new WebSocket('wss://it.bisds.org/ws');
     const pdfContainer = document.getElementById('pdfContainer');
     const pdfCanvas = document.getElementById('pdfCanvas');
     const videoPlayer = document.getElementById('videoPlayer');
